@@ -3,6 +3,8 @@ package ab.movies.api;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +25,7 @@ public class FacadeControler {
 		LOG.info("/help)");
 		return "<BR>/movie?id=NN<BR>/update_details" + "<BR><BR>Users" + "<BR>admin/admin" + "<BR>user/user"
 				+ "<BR>user2/user2"
-				+ "<BS>If NoComments is a part of id, there will be no comments, if NoDetails a part of id, there will be no details";
+				+ "<BR><BR>If NoComments is a part of id (means: ?id=xxccNoCommentsiiiw), there will be no comments, if NoDetails a part of id, there will be no details";
 	}
 
 	@RequestMapping("/movie")
@@ -45,9 +47,9 @@ public class FacadeControler {
 		return "NOT IMPLEMENTED";
 	}
 
-	@ExceptionHandler(Exception.class)
-	public RestResultData<String> handleIOException(Exception ex) {
-		RestResultData<String> result = new RestResultData<>("Unexpected error");
+	@ExceptionHandler({Exception.class})
+	public RestResultData<String> handleException(Exception ex) {
+		RestResultData<String> result = new RestResultData<>("<<Unexpected error>>");
 		result.setException(ex);
 		return result;
 	}

@@ -39,16 +39,9 @@ public class RESTServiceConsumer<T> {
 	@Bean
 	public RestResultData<T> get(String id) {
 		RestResultData<T> result;
-		try {
-			T data = (T) restTemplate.getForObject(serviceUrl, genericType, id);
-			result = new RestResultData<>(data);
-		} catch (Exception ex) {
-			result = new RestResultData<>(null);
-			result.setException(ex);
-		} 
-		if (result.getData()!=null) {
-			cache.put(new Element(id, result.clone("CACHED")));
-		}
+		T data = (T) restTemplate.getForObject(serviceUrl, genericType, id);
+		result = new RestResultData<>(data);
+		cache.put(new Element(id, result.clone("CACHED")));
 		return result;
 	}
 

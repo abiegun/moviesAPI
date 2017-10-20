@@ -13,8 +13,8 @@ public class MockedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/", "/movie").permitAll();
-		http.authorizeRequests().antMatchers("/update_comment").hasRole("USER").and().formLogin();
-		http.authorizeRequests().antMatchers("/update_details").hasRole("ADMIN").and().formLogin();
+		http.authorizeRequests().antMatchers("/update_comment").hasRole("USER").and().httpBasic();
+		http.authorizeRequests().antMatchers("/update_details").hasRole("ADMIN").and().httpBasic();
 		http.authorizeRequests().antMatchers("/movie_details", "/movie_comments").permitAll();
 	}
 

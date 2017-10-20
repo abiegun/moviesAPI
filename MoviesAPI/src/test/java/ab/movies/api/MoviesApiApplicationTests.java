@@ -136,7 +136,7 @@ public class MoviesApiApplicationTests {
 
 		RestResultData<MovieInfo> mi = controller.movieInfo(id);
 		assertThat(mi.getData().getMovieDetails().getState()).isEqualTo("CACHED");
-		// assertThat(mi.getData().getMovieComments().getState()).isEqualTo("CACHED");
+		assertThat(mi.getData().getMovieComments().getState()).isEqualTo("CACHED");
 	}
 
 }
