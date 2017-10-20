@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor()
 public class MovieComments implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id;
+	private String movieId;
 	private String message;
 	private String username;
 	private long requestId;

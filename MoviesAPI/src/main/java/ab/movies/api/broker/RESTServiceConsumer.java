@@ -18,28 +18,37 @@ public class RESTServiceConsumer<T> {
 	private Cache cache;
 	private Class<T> genericType;
 
+	private RestTemplate restTemplate;
 
 	RESTServiceConsumer(Class<T> type, String url, String cachePolicy) {
 		this.serviceUrl = url;
 		genericType = type;
 		cacheManager.addCache(url);
 		cache = cacheManager.getCache(url);
+		restTemplate = RestTemplateFactory.getRestTemplate(type.getName());
 		CacheConfiguration config = cache.getCacheConfiguration();
 		config.setMemoryStoreEvictionPolicy(cachePolicy);
 		config.setMaxEntriesLocalHeap(10000);
+
+	}
+
+	public RestTemplate getRestTemplate() {
+		return restTemplate;
 	}
 
 	@Bean
-	public RestResultData<T>  get(String id) {
+	public RestResultData<T> get(String id) {
 		RestResultData<T> result;
 		try {
-			T data = (T) RemoteRestTemplate.getInstance().getForObject(serviceUrl, genericType, id);
+			T data = (T) restTemplate.getForObject(serviceUrl, genericType, id);
 			result = new RestResultData<>(data);
-		} catch (RestClientException ex) {
+		} catch (Exception ex) {
 			result = new RestResultData<>(null);
 			result.setException(ex);
+		} 
+		if (result.getData()!=null) {
+			cache.put(new Element(id, result.clone("CACHED")));
 		}
-		cache.put(new Element(id, result.clone("CACHED")));
 		return result;
 	}
 
@@ -54,7 +63,6 @@ public class RESTServiceConsumer<T> {
 			}
 			RestResultData<T> result = new RestResultData<>(null);
 			result.setException(ex);
-			cache.put(new Element(id, result.clone("CACHED")));
 			return result;
 		}
 	}
