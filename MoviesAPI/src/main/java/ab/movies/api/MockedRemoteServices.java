@@ -16,14 +16,19 @@ public class MockedRemoteServices {
 	@RequestMapping("/movie_details")
 	public MovieDetails movieDetails(@RequestParam(value = "id", defaultValue = "No ID") String id) {
 		LOG.info("MOCKED: movieDetails(" + id + ")");
+		if (id.contains("NoDetails")) {
+			return null;
+		}
 		return new MovieDetails(id, "Mocked Title-" + id, "Mocked Description-" + id, requestId++);
 	}
 
 	@RequestMapping("/movie_comments")
 	public MovieComments[] movieComments(@RequestParam(value = "id", defaultValue = "No ID") String id) {
 		LOG.info("MOCKED: movieComments(" + id + ")");
+		if (id.contains("NoComments")) {
+			return null;
+		}
 		return new MovieComments[] { new MovieComments(id, "Mocked message-" + id, "Mocked user-" + id, requestId++),
 				new MovieComments(id, "Mocked message2-" + id, "Mocked user2-" + id, requestId++) };
 	}
-
 }

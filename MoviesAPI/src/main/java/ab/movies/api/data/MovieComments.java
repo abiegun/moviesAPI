@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data 
-@AllArgsConstructor
+@AllArgsConstructor()
 public class MovieComments implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
