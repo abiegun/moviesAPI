@@ -23,7 +23,9 @@ public class RESTServiceConsumer<T> {
 	RESTServiceConsumer(Class<T> type, String url, String cachePolicy) {
 		this.serviceUrl = url;
 		genericType = type;
-		cacheManager.addCache(url);
+		if (null==cacheManager.getCache(url)) {
+			cacheManager.addCache(url);
+		}
 		cache = cacheManager.getCache(url);
 		restTemplate = RestTemplateFactory.getRestTemplate(type.getName());
 		CacheConfiguration config = cache.getCacheConfiguration();

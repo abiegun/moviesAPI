@@ -3,8 +3,7 @@ package ab.movies.api;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.access.AuthorizationServiceException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +17,10 @@ import ab.movies.api.data.RestResultData;
 public class FacadeControler {
 
 	private static final Logger LOG = Logger.getLogger(FacadeControler.class.getName());
-
+	
+	@Autowired
+	private DataProducer producer;
+	
 	@RequestMapping(value = { "/", "/help" })
 	public String help() {
 		LOG.info("/help)");
@@ -31,7 +33,7 @@ public class FacadeControler {
 	public RestResultData<MovieInfo> movieInfo(@RequestParam(value = "id", defaultValue = "") String id)
 			throws InterruptedException, ExecutionException {
 		LOG.info("/movie?id=" + id);
-		return DataProducer.getInstance().getMovieInfo(id);
+		return producer.getMovieInfo(id);
 	}
 
 	@RequestMapping(value = "/update_details", method = RequestMethod.GET)
