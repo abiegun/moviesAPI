@@ -3,8 +3,7 @@ package ab.movies.api;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,11 +45,11 @@ public class FacadeControler {
 		LOG.info("/update_comment  NOT IMPLEMENTED");
 		return "NOT IMPLEMENTED";
 	}
-
-	@ExceptionHandler({Exception.class})
-	public RestResultData<String> handleException(Exception ex) {
-		RestResultData<String> result = new RestResultData<>("<<Unexpected error>>");
-		result.setException(ex);
-		return result;
+	
+	@RequestMapping(value = "/access-denied-error-page")
+	public String accessDenied() {
+		LOG.info("/accessDenied");
+		return "<BR><BR><CENTER>Current user has no access to this page";
 	}
+
 }
